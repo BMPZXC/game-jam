@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvyakgw5nqb70"]
+
+[ext_resource type="Script" uid="uid://cst52mewg8j3" path="res://GDBase/Spawner/Launcher/launcher.gd" id="1_snu47"]
+[ext_resource type="Script" uid="uid://6e551kvioost" path="res://GDBase/Spawner/SpawnerBase/spawner.gd" id="2_vacwv"]
+[ext_resource type="PackedScene" uid="uid://bxnoo43u8rl6x" path="res://GDBase/Spawner/Launcher/Bullet/bullet.tscn" id="3_y68st"]
+
+[node name="Launcher" type="Node2D"]
+script = ExtResource("1_snu47")
+
+[node name="Spawner" type="Node" parent="."]
+script = ExtResource("2_vacwv")
+spawned_instance_packedscene = ExtResource("3_y68st")
+metadata/_custom_type_script = "uid://6e551kvioost"

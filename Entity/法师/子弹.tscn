@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsbo6kkxwwm5r"]
+
+[ext_resource type="Texture2D" uid="uid://cx4wh4s43ws6a" path="res://Asset/子弹.png" id="1_avssp"]
+
+[sub_resource type="GDScript" id="GDScript_to14f"]
+script/source = "extends Area2D
+var zidan:生物.子弹
+var diren:生物
+var qiang_hua=0
+func _ready() -> void:
+	qiang_hua=zidan.强化值
+	var a=diren.global_position-global_position
+	rotation=a.angle()
+var time:float=0
+func _process(delta: float) -> void:
+	rotation=fposmod(rotation, PI*2)
+	var a=diren.global_position-global_position
+	var c=a.angle()-rotation
+	c=fposmod(c, PI*2)
+	if c>=PI:
+		c=c-PI*2
+	var b=min(abs(c),deg_to_rad(180/(1+time*3)*delta*(1+qiang_hua)))
+	rotation+=sign(c)*b
+	position+=delta* Vector2.RIGHT.rotated(rotation)*生物.单位_速度*(1+pow(time,3))*(1+qiang_hua)
+	time+=delta
+	
+
+
+func _on_body_entered(body: Node2D) -> void:
+	zidan.攻击(body)
+	queue_free()
+	
+
+
+func _on_timer_timeout() -> void:
+	queue_free()
+"
+
+[node name="Area2D" type="Area2D"]
+z_index = 10
+collision_layer = 0
+collision_mask = 4
+script = SubResource("GDScript_to14f")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_avssp")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-13, -11)
+polygon = PackedVector2Array(28, 11, 0, 22, 0, 22, 0, 0)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

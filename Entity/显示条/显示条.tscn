@@ -1,0 +1,93 @@
+[gd_scene load_steps=6 format=3 uid="uid://chrr4rapknsu0"]
+
+[sub_resource type="GDScript" id="GDScript_77ag0"]
+script/source = "@tool
+extends CanvasLayer
+@export var a:生物
+@export var weizi:Vector2=Vector2(0,0)
+func _process(_delta: float) -> void:
+	if not get_parent() is SubViewport:
+		offset=get_parent().global_position+weizi
+"
+
+[sub_resource type="GDScript" id="GDScript_ifs7j"]
+script/source = "extends VBoxContainer
+var a:生物
+@onready var panel: Panel = $Panel
+@onready var panel_3: Panel = $Panel/Panel3
+@onready var panel_2: Panel = $Panel2
+var cangdu
+func _ready() -> void:
+	a=get_parent().a
+	assert(a is 生物,\"必须绑定 var a:生物\")
+	cangdu=size.x
+	siheng()
+	a.失衡_变动.connect(siheng)
+	seng()
+	a.生命_变动.connect(seng)
+	hu()
+	a.护盾_变动.connect(hu)
+func siheng(h=a.失衡,_b=0):
+	bian(panel_2,h,a.失衡_上线)
+func seng(h=a.生命,_b=0):
+	bian(panel,h,a.生命_上线)
+func hu(h=a.护盾,_b=0):
+	bian(panel_3,h,a.护盾_上线)
+func bian(h:Panel,b,c):
+	h.get_theme_stylebox(\"panel\").set(\"border_width_right\",max(int(cangdu-1.0*b/c*cangdu),0.0))
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j87at"]
+resource_local_to_scene = true
+bg_color = Color(1, 0.63153, 0.675145, 1)
+border_width_right = 30
+border_color = Color(0.337072, 0.337072, 0.337072, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifs7j"]
+resource_local_to_scene = true
+bg_color = Color(0.5535, 0.53, 1, 0.639216)
+border_width_right = 50
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rdiw5"]
+resource_local_to_scene = true
+bg_color = Color(0.671007, 1, 0.572342, 1)
+border_width_right = 30
+border_color = Color(0.309361, 0.323495, 0.304288, 1)
+
+[node name="CanvasLayer" type="CanvasLayer"]
+offset = Vector2(1.24, 1.35)
+transform = Transform2D(1, 0, 0, 1, 1.24, 1.35)
+follow_viewport_enabled = true
+script = SubResource("GDScript_77ag0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = -31.0
+offset_top = -13.89
+offset_right = 31.0
+offset_bottom = -2.89
+theme_override_constants/separation = 2
+alignment = 2
+script = SubResource("GDScript_ifs7j")
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 2.755)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j87at")
+
+[node name="Panel3" type="Panel" parent="VBoxContainer/Panel"]
+custom_minimum_size = Vector2(0, 2.755)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -1.3775
+offset_right = 62.0
+offset_bottom = 1.3775
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ifs7j")
+
+[node name="Panel2" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 2.755)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rdiw5")

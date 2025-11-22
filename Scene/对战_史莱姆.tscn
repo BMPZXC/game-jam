@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=4 uid="uid://bqxmlluvr7tvy"]
+
+[ext_resource type="TileSet" uid="uid://cmh537og13tx6" path="res://Scene/地块.tres" id="1_ghgo0"]
+[ext_resource type="PackedScene" uid="uid://cimy84bw6gu37" path="res://Entity/人物.tscn" id="2_ximn3"]
+[ext_resource type="PackedScene" uid="uid://ks74cfuka2mp" path="res://Entity/史莱姆/史莱姆.tscn" id="4_6oi60"]
+
+[sub_resource type="GDScript" id="GDScript_rs4ql"]
+script/source = "extends Node2D
+@onready var character_body_2d: CharacterBody2D = $CharacterBody2D
+@onready var character_body_2d_3: CharacterBody2D = $CharacterBody2D3
+
+func _ready() -> void:
+	character_body_2d_3.diren=character_body_2d
+
+func _on_character_body_2d_死亡_() -> void:
+	await get_tree().process_frame
+	get_tree().change_scene_to_file(\"res://场景/对战_史莱姆.tscn\")
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource("GDScript_rs4ql")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAkAAAAIAAMAAAABAAkAAAAEAAEAAAACAAkAAAAEAAEAAAADAAkAAAAEAAEAAAAEAAkAAAAEAAEAAAAFAAkAAAAEAAEAAAAGAAkAAAAEAAEAAAAHAAkAAAAEAAEAAAAIAAkAAAAEAAEAAAAJAAkAAAAEAAMAAAAKAAkAAAAEAAEAAAALAAkAAAAEAAEAAAAMAAkAAAAEAAEAAAANAAkAAAAEAAMAAAAOAAkAAAAEAAMAAAAPAAkAAAAEAAMAAAAQAAkAAAAEAAMAAAARAAkAAAAIAAMAAAASAAkAAAAEAAEAAAATAAkAAAAEAAEAAAAUAAkAAAAEAAEAAAAVAAkAAAAEAAEAAAAWAAkAAAAMAAEAAAD//wkAAAAEAAEAAAD+/wkAAAAEAAEAAAD9/wkAAAAEAAEAAAD8/wkAAAAEAAMAAAD7/wkAAAAEAAMAAAD6/wkAAAALAAEAAAAAAAgAAAADAAIAAAAAAAcAAAAFAAIAAAAAAAYAAAAFAAIAAAAAAAUAAAAFAAIAAAAAAAQAAAADAAIAAAAAAAMAAAAFAAIAAAAAAAIAAAAFAAIAAAAAAAEAAAAFAAIAAAAAAAAAAAAHAAEAAAARAAgAAAAFAAIAAAARAAcAAAAFAAIAAAARAAYAAAAFAAIAAAARAAUAAAAFAAIAAAARAAQAAAADAAIAAAARAAMAAAADAAIAAAARAAIAAAAFAAIAAAARAAEAAAADAAIAAAARAAAAAAAJAAEAAAABAAAAAAAEAAMAAAACAAAAAAAEAAEAAAADAAAAAAAEAAMAAAAEAAAAAAAEAAMAAAAFAAAAAAAEAAMAAAAGAAAAAAAEAAEAAAAHAAAAAAAEAAEAAAAIAAAAAAAEAAMAAAAJAAAAAAAEAAEAAAAKAAAAAAAEAAEAAAALAAAAAAAEAAMAAAAMAAAAAAAEAAMAAAANAAAAAAAEAAEAAAAOAAAAAAAEAAEAAAAPAAAAAAAEAAEAAAAQAAAAAAAEAAEAAAA=")
+tile_set = ExtResource("1_ghgo0")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("2_ximn3")]
+z_index = 1
+position = Vector2(122, 517)
+
+[node name="CharacterBody2D3" parent="." instance=ExtResource("4_6oi60")]
+position = Vector2(1029, 517)
+
+[connection signal="死亡_" from="CharacterBody2D" to="." method="_on_character_body_2d_死亡_"]

@@ -1,0 +1,509 @@
+[gd_scene load_steps=29 format=3 uid="uid://cimy84bw6gu37"]
+
+[ext_resource type="Script" uid="uid://84ihgrrxl3xf" path="res://Entity/玩家.gd" id="1_0swfv"]
+[ext_resource type="Shader" uid="uid://clp8hn51js7q0" path="res://Shader/受击.gdshader" id="2_8mfip"]
+[ext_resource type="Texture2D" uid="uid://l5l1raqvfnvg" path="res://Asset/美术/卡比.png" id="2_77ag0"]
+[ext_resource type="Texture2D" uid="uid://dqlm1ukqi6g5u" path="res://Asset/美术/卡比-攻击-Sheet.png" id="3_0dmg4"]
+[ext_resource type="Texture2D" uid="uid://sdu6gms73f1e" path="res://Asset/美术/索敌2.png" id="4_0tw4y"]
+[ext_resource type="Texture2D" uid="uid://hq4m3hx486qm" path="res://Asset/美术/四轴_1.tres" id="6_1fpcv"]
+[ext_resource type="PackedScene" uid="uid://chrr4rapknsu0" path="res://Entity/显示条/显示条.tscn" id="6_77ag0"]
+[ext_resource type="Texture2D" uid="uid://xfadbtdydbsh" path="res://Asset/美术/四轴_2.tres" id="7_1fpcv"]
+[ext_resource type="Texture2D" uid="uid://dtjt68bb6o3nj" path="res://Asset/美术/按钮.tres" id="8_vloyp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dmg4"]
+size = Vector2(43, 43)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0h2ob"]
+resource_local_to_scene = true
+shader = ExtResource("2_8mfip")
+shader_parameter/is_hit = false
+shader_parameter/qiang_hua = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[sub_resource type="GDScript" id="GDScript_0dmg4"]
+script/source = "extends Area2D
+@onready var character_body_2d = $\"..\"
+
+var g
+func _on_body_entered(body: Node2D) -> void:
+	if not g:return
+	if body is 生物:
+		body.受击(g)
+func g1():
+	g=character_body_2d.攻击(0.25)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xilm6"]
+size = Vector2(95.5, 47)
+
+[sub_resource type="Animation" id="Animation_77ag0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon/卡比-攻击-sheet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_0tw4y"]
+resource_name = "攻击"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon/卡比-攻击-sheet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.133333, 0.166667, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 3, 4, 5, 6]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Area2D/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.0333333, 0.0973583),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1fpcv"]
+_data = {
+&"RESET": SubResource("Animation_77ag0"),
+&"攻击": SubResource("Animation_0tw4y")
+}
+
+[sub_resource type="Animation" id="Animation_yuwps"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Icon:material:shader_parameter/is_hit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_0h2ob"]
+resource_name = "受击"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Icon:material:shader_parameter/is_hit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.051276866, 0.10595229, 0.16063733, 0.2470046, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5cctg"]
+_data = {
+&"RESET": SubResource("Animation_yuwps"),
+&"受击": SubResource("Animation_0h2ob")
+}
+
+[sub_resource type="GDScript" id="GDScript_0tw4y"]
+script/source = "extends Area2D
+var mubiao:生物:
+	set(a):
+		mubiao=a
+		if not a:
+			juli=9999
+			suoding=false
+var juli:float=9999
+var suoding=false
+@onready var character_body_2d = $\"..\"
+@onready var animation_player: AnimationPlayer = $\"../AnimationPlayer\"
+
+
+@onready var canvas_layer: CanvasLayer = $CanvasLayer
+
+func _process(_delta: float) -> void:
+	if mubiao:
+		canvas_layer.visible=true
+		canvas_layer.offset=mubiao.global_position
+	else :
+		canvas_layer.visible=false
+		
+func _on_timer_timeout() -> void:
+	#return
+	suaxing()
+	if suoding:return
+	for i in get_overlapping_bodies():
+		if i is not 生物:continue
+		var dist = global_position.distance_to(i.global_position)
+		if dist< juli:
+			mubiao=i
+			juli=dist
+
+
+func suaxing():
+	if not mubiao:
+		suoding=false
+		return
+	juli=global_position.distance_to(mubiao.global_position)
+	if juli>600  :
+		mubiao=null
+		
+	
+	
+		
+@onready var area_2d2: Area2D = $\"../Area2D\"
+
+func _on_character_body_2d_gongji(g) -> void:
+	if not g:return
+	area_2d2.g=g
+	#_on_timer_timeout()
+	#if not mubiao:
+	if true:
+		#character_body_2d.tesuzuang_yidong+=1
+		animation_player.play(\"攻击\")
+		#animation_player.animation_finished.connect(func (_a):character_body_2d.tesuzuang_yidong-=1,CONNECT_ONE_SHOT)
+	else :
+		character_body_2d.tesuzuang_yidong+=1
+		suoding=true
+		var c=character_body_2d.global_position
+		var a=mubiao.global_position
+		var b=sign(a.x-c.x)
+		if b!=character_body_2d.suiping_fangxing_zeng:
+			character_body_2d.scale.x=-character_body_2d.scale.x
+			character_body_2d.suiping_fangxing_zeng=-character_body_2d.suiping_fangxing_zeng
+		var d=Vector2(70,30)
+		if Rect2(c-Vector2(15,0),d).has_point(a):
+			aaaa()
+		a.x+=-b*70
+		var tw = create_tween()
+		tw.finished.connect(aaaa)
+		tw.tween_property(character_body_2d, \"global_position\", a, 0.15)\\
+				.set_trans(Tween.TRANS_QUINT)\\
+				.set_ease(Tween.EASE_OUT)
+		
+func aaaa():
+	animation_player.play(\"攻击\")
+	await animation_player.animation_finished
+	character_body_2d.tesuzuang_yidong-=1
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0tw4y"]
+radius = 198.063
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0tw4y"]
+bg_color = Color(0.233697, 0.470644, 0.825856, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_vloyp"]
+script/source = "extends Panel
+@onready var character_body_2d: CharacterBody2D = $\"../..\"
+var a=preload(\"res://人物/人物.tscn::StyleBoxFlat_0tw4y\")
+func _process(_delta: float) -> void:
+	a.set(\"border_width_right\",3+size.x*(1-character_body_2d.时间/character_body_2d.时间_上线)*0.5)
+
+	
+"
+
+[sub_resource type="Curve" id="Curve_vloyp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0.2080239), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1fpcv"]
+radius = 129.23
+
+[sub_resource type="GDScript" id="GDScript_1fpcv"]
+script/source = "extends TouchScreenButton
+signal 方向(a:Vector2,b:float)
+func _ready() -> void:
+	set_process(false)
+	
+	fuyuan()
+@onready var character_body_2d = $\"../../..\"
+
+func _process(delta):
+	
+	var a:Vector2=get_viewport().get_mouse_position()
+	var d=shape.radius*scale.x
+	var b=global_position+Vector2(d,d)
+	
+	if a.distance_squared_to(b)<d**2:
+		$Sprite2D.global_position=a
+	else :
+		var dir  = (a - b).normalized()   
+		$Sprite2D.global_position= b + dir * d       
+	var m=($Sprite2D.global_position-b)/d
+	
+	character_body_2d.yi(m.x,delta)
+	
+	方向.emit(m,delta)
+	
+
+func _on_pressed() -> void:
+	set_process(true)
+	character_body_2d.tesuzuang_yidong+=1
+func _on_released() -> void:
+	set_process(false)
+	character_body_2d.tesuzuang_yidong-=1
+	fuyuan()
+func fuyuan():
+	var d=shape.radius*scale.x
+	var b=global_position+Vector2(d,d)
+	$Sprite2D.global_position=b
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8mfip"]
+radius = 31.04
+
+[sub_resource type="Environment" id="Environment_8mfip"]
+background_mode = 3
+background_canvas_max_layer = 4
+glow_enabled = true
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 2
+platform_floor_layers = 2
+script = ExtResource("1_0swfv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 2.5)
+shape = SubResource("RectangleShape2D_0dmg4")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_enabled = false
+position_smoothing_enabled = true
+drag_vertical_enabled = true
+
+[node name="Icon" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_0h2ob")
+texture = ExtResource("2_77ag0")
+
+[node name="卡比-攻击-sheet" type="Sprite2D" parent="Icon"]
+z_index = 1
+position = Vector2(0, -3)
+texture = ExtResource("3_0dmg4")
+hframes = 7
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
+script = SubResource("GDScript_0dmg4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(48.75, -0.5)
+shape = SubResource("RectangleShape2D_xilm6")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_1fpcv")
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationPlayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_5cctg")
+}
+
+[node name="索敌" type="Area2D" parent="."]
+collision_layer = 0
+script = SubResource("GDScript_0tw4y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="索敌"]
+shape = SubResource("CircleShape2D_0tw4y")
+
+[node name="Timer" type="Timer" parent="索敌"]
+process_callback = 0
+wait_time = 0.1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="索敌"]
+visible = false
+follow_viewport_enabled = true
+
+[node name="索敌2" type="Sprite2D" parent="索敌/CanvasLayer"]
+texture = ExtResource("4_0tw4y")
+
+[node name="CanvasLayer" parent="." node_paths=PackedStringArray("a") instance=ExtResource("6_77ag0")]
+offset = Vector2(0, -25.345)
+transform = Transform2D(1, 0, 0, 1, 0, -25.345)
+a = NodePath("..")
+weizi = Vector2(0, -25.345)
+
+[node name="ui" type="CanvasLayer" parent="."]
+layer = 2
+visible = false
+
+[node name="Panel" type="Panel" parent="ui"]
+anchors_preset = -1
+anchor_left = 0.536
+anchor_top = 1.0
+anchor_right = 0.536
+anchor_bottom = 1.0
+offset_left = -253.47205
+offset_top = -51.0
+offset_right = 252.52795
+offset_bottom = -28.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0tw4y")
+script = SubResource("GDScript_vloyp")
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="Control" parent="ui/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line2D" type="Line2D" parent="ui/Panel/Control"]
+points = PackedVector2Array(0, -20, 0, 0, 0, 20)
+width_curve = SubResource("Curve_vloyp")
+default_color = Color(0.8090962, 0.84859353, 1, 1)
+
+[node name="Node2D" type="Node2D" parent="ui"]
+
+[node name="Control" type="Control" parent="ui"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="ui/Control"]
+visible = false
+position = Vector2(31, 455)
+scale = Vector2(0.645, 0.645)
+texture_normal = ExtResource("6_1fpcv")
+shape = SubResource("CircleShape2D_1fpcv")
+script = SubResource("GDScript_1fpcv")
+
+[node name="Sprite2D" type="Sprite2D" parent="ui/Control/TouchScreenButton"]
+position = Vector2(133, 126)
+texture = ExtResource("7_1fpcv")
+
+[node name="Control" type="Control" parent="ui/Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -1.0
+offset_right = -2.0
+offset_bottom = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TouchScreenButton3" type="TouchScreenButton" parent="ui/Control/Control"]
+position = Vector2(-75, -77)
+texture_normal = ExtResource("8_vloyp")
+shape = SubResource("CircleShape2D_8mfip")
+action = "攻击"
+
+[node name="Label" type="Label" parent="ui/Control/Control/TouchScreenButton3"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+text = "鼠标
+左键"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TouchScreenButton5" type="TouchScreenButton" parent="ui/Control/Control"]
+position = Vector2(-161, -77)
+texture_normal = ExtResource("8_vloyp")
+shape = SubResource("CircleShape2D_8mfip")
+action = "防御"
+
+[node name="Label" type="Label" parent="ui/Control/Control/TouchScreenButton5"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 39
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TouchScreenButton4" type="TouchScreenButton" parent="ui/Control/Control"]
+position = Vector2(-243, -77)
+texture_normal = ExtResource("8_vloyp")
+shape = SubResource("CircleShape2D_8mfip")
+action = "休息"
+
+[node name="Label" type="Label" parent="ui/Control/Control/TouchScreenButton4"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 39
+text = "Q"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="ui"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -121.0
+offset_top = 11.0
+offset_right = -17.0
+offset_bottom = 54.0
+grow_horizontal = 0
+text = "隐藏按键提示"
+flat = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8mfip")
+
+[connection signal="gongji" from="." to="索敌" method="_on_character_body_2d_gongji"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="timeout" from="索敌/Timer" to="索敌" method="_on_timer_timeout"]
+[connection signal="pressed" from="ui/Control/TouchScreenButton" to="ui/Control/TouchScreenButton" method="_on_pressed"]
+[connection signal="released" from="ui/Control/TouchScreenButton" to="ui/Control/TouchScreenButton" method="_on_released"]

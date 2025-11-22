@@ -1,0 +1,129 @@
+[gd_scene load_steps=10 format=3 uid="uid://d0chr03uqxmkp"]
+
+[ext_resource type="Shader" uid="uid://clp8hn51js7q0" path="res://Shader/受击.gdshader" id="1_akk10"]
+[ext_resource type="Texture2D" uid="uid://b2waybercdoji" path="res://Asset/法师.png" id="1_hed41"]
+[ext_resource type="PackedScene" uid="uid://chrr4rapknsu0" path="res://Entity/显示条/显示条.tscn" id="2_7cn65"]
+
+[sub_resource type="GDScript" id="GDScript_hed41"]
+script/source = "extends 生物
+var diren:生物
+
+@onready var marker_2d: Marker2D = $Marker2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var 法师 = $法师.material
+
+var zidan=preload(\"res://人物/法师/子弹.tscn\")
+func _ready() -> void:
+	受击_.connect(func ():animation_player.play(\"受击\"))
+	强化_变动.connect(func (a,_b):法师.set(\"shader_parameter/qiang_hua\",a/单位_时间))
+func physics_process(delta: float) -> void:
+	if 锁定_移动 or 失衡中:return
+	#var juli:Vector2=diren.global_position-global_position
+	##var fangxiang=sign(juli)
+	#juli=abs(juli)
+	#if 时间<0:return
+	#if 强化<单位_时间*2*juli.length()/100:
+		#休息(delta)
+	#else :
+		#攻击_法师()
+	#移动1(delta,-fangxiang.x)
+
+func  移动1(delta,yidong):
+	if abs(velocity.x)>单位_速度*2:
+		return
+	if yidong*velocity.x<0:
+		velocity.x=-velocity.x*0.5
+		return
+	velocity.x+=yidong*delta*单位_速度
+	if abs(velocity.x)>=单位_速度*0.7:
+		velocity.x=单位_速度*0.7*yidong
+	水平_阻力=false
+
+func 攻击_法师():
+	if 锁定_动画:return
+	锁定_动画=true
+	var b=攻击(单位_时间)
+	if b:
+		pass
+		var a=zidan.instantiate()
+		a.zidan=b
+		a.diren=diren
+		a.position=marker_2d.position
+		add_child(a)
+	await get_tree().create_timer(单位_时间).timeout
+	锁定_动画=false
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7cn65"]
+size = Vector2(24, 55)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6fto"]
+resource_local_to_scene = true
+shader = ExtResource("1_akk10")
+shader_parameter/is_hit = false
+shader_parameter/qiang_hua = 0.0
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_o6fto"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/is_hit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_akk10"]
+resource_name = "受击"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/is_hit")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ovnr1"]
+_data = {
+&"RESET": SubResource("Animation_o6fto"),
+&"受击": SubResource("Animation_akk10")
+}
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+collision_mask = 2
+script = SubResource("GDScript_hed41")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_7cn65")
+
+[node name="法师" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_o6fto")
+texture = ExtResource("1_hed41")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(18, -15)
+
+[node name="CanvasLayer" parent="." node_paths=PackedStringArray("a") instance=ExtResource("2_7cn65")]
+offset = Vector2(0, -30.785)
+transform = Transform2D(1, 0, 0, 1, 0, -30.785)
+a = NodePath("..")
+weizi = Vector2(0, -30.785)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../法师")
+libraries = {
+&"": SubResource("AnimationLibrary_ovnr1")
+}
