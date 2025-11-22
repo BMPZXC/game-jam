@@ -1,10 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://l6yw5wxqbbm3"]
+[gd_scene load_steps=7 format=3 uid="uid://l6yw5wxqbbm3"]
 
 [ext_resource type="Texture2D" uid="uid://8pblmexqx5vk" path="res://Asset/boxes.png" id="1_sxyjl"]
 [ext_resource type="Texture2D" uid="uid://48hnhf62todh" path="res://Asset/meme.png" id="2_h2qjg"]
+[ext_resource type="Script" uid="uid://twsbkr63b21g" path="res://GDBase/Move/Input/move_gravity_by_input_component.gd" id="4_boq8c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxyjl"]
 size = Vector2(12, 12)
+
+[sub_resource type="Curve" id="Curve_h2qjg"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_boq8c"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Entity" type="CharacterBody2D"]
 
@@ -22,3 +31,14 @@ region_rect = Rect2(0, 0, 16, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_sxyjl")
+
+[node name="MoveGravityByInput" type="Node" parent="." node_paths=PackedStringArray("mover")]
+script = ExtResource("4_boq8c")
+mover = NodePath("..")
+gravity = 16.0
+jump_power = 256.0
+empty_jump_time = 1.0
+time_faster = 0.2
+time_slower = 0.2
+faster_curve = SubResource("Curve_h2qjg")
+slower_curve = SubResource("Curve_boq8c")

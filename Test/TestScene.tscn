@@ -10,6 +10,7 @@ tile_map_data = PackedByteArray("AAD//wEAAAABAAMAAAAAAAEAAAABAAMAAAABAAEAAAABAAM
 tile_set = ExtResource("1_804c2")
 
 [node name="Entity" parent="." instance=ExtResource("2_wyv1x")]
-position = Vector2(-52, -27)
+position = Vector2(-53, -22)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2.5, 2.5)
