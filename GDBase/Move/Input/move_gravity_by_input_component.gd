@@ -59,15 +59,17 @@ func _check_state():
 	if mover.is_on_floor():
 		if current_state == State.Ground:
 			return
+		current_state = State.Ground
 		jump_num = max_jump_num
 		empty_jump_timer.stop()
-		current_state = State.Ground
 	else:
 		if current_state == State.Air:
 			return
-		if empty_jump_timer.is_stopped():
-			empty_jump_timer.start()
 		current_state = State.Air
+		if empty_jump_timer.is_stopped() and mover.velocity.y > 0:
+			empty_jump_timer.start()
+			await empty_jump_timer.timeout
+			jump_num -= 1
 
 func _set_mover_velocity_x(delta:float):
 	if input_x == 0 and mover.velocity.x != 0:
@@ -95,17 +97,14 @@ func _deceleration(delta:float):
 
 func _set_mover_veloctiy_y():
 	if mover.is_on_floor():
-		if jump_num > 0 and input_y != 0:
-			mover.velocity.y = -input_y * jump_power
-			jump_num -= 1
-	elif !empty_jump_timer.is_stopped():
-		if jump_num > 0 and input_y != 0:
-			mover.velocity.y = -input_y * jump_power
-			jump_num -= 1
-		else:
-			mover.velocity.y += gravity
+		mover.velocity.y += gravity
 	else:
 		mover.velocity.y += gravity
+	
+	if jump_num > 0 and Input.is_action_just_pressed("move_up"):
+		mover.velocity.y = - input_y * jump_power
+		jump_num -= 1
+
 func _create_empty_jump_timer():
 	if empty_jump_timer:
 		return
