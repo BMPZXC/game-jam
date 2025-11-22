@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://l6yw5wxqbbm3"]
+[gd_scene load_steps=10 format=3 uid="uid://l6yw5wxqbbm3"]
 
 [ext_resource type="Texture2D" uid="uid://8pblmexqx5vk" path="res://Asset/boxes.png" id="1_sxyjl"]
 [ext_resource type="Texture2D" uid="uid://48hnhf62todh" path="res://Asset/meme.png" id="2_h2qjg"]
 [ext_resource type="PackedScene" uid="uid://dvyakgw5nqb70" path="res://GDBase/Spawner/Launcher/launcher.tscn" id="4_adxne"]
 [ext_resource type="Script" uid="uid://twsbkr63b21g" path="res://GDBase/Move/Input/move_gravity_by_input_component.gd" id="4_boq8c"]
 [ext_resource type="Script" uid="uid://cmo1t30f66qgo" path="res://GDBase/Move/Orbit/orbit_component.gd" id="5_adxne"]
+[ext_resource type="Script" uid="uid://v4uwxotregtq" path="res://GDBase/Health/health_component.gd" id="6_ilp0k"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxyjl"]
 size = Vector2(12, 12)
@@ -61,3 +62,10 @@ rotation_center = NodePath("..")
 radius = 18.0
 to_mouse = true
 metadata/_custom_type_script = "uid://cmo1t30f66qgo"
+
+[node name="HealthComponent" type="Area2D" parent="."]
+script = ExtResource("6_ilp0k")
+metadata/_custom_type_script = "uid://v4uwxotregtq"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HealthComponent"]
+shape = SubResource("RectangleShape2D_sxyjl")
