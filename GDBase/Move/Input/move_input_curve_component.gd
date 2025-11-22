@@ -5,7 +5,8 @@ class_name MoveInCurveByInputComponent
 
 @export var mover:CharacterBody2D
 @export var turn_in_point:bool
-@export var max_speed :float = 128.0 ##最大移动速度
+@export var max_speed:float = 128.0
+@export var gravity:float = 0
 ##请注意，若需要加速时间严格等于下方时间，需要您的加速曲线在结尾处才达到最高点
 ##减速时间同理，在结尾处达到最低点
 @export var time_faster:float = 1 ##加速时间
@@ -45,13 +46,14 @@ func _physics_process(delta: float) -> void:
 	update_state()
 	match current_state:
 		MovementState.Idle:
-			return
+			pass
 		MovementState.ACCELERATING:
 			accelerate(delta)
 		MovementState.DECELERATING:
 			deceleration(delta)
 		MovementState.TURNING:
 			turn(delta)
+	mover.velocity.y += gravity
 	mover.move_and_slide()
 
 func check_input():

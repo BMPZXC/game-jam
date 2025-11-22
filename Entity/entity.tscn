@@ -1,9 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://l6yw5wxqbbm3"]
+[gd_scene load_steps=8 format=3 uid="uid://l6yw5wxqbbm3"]
 
 [ext_resource type="Texture2D" uid="uid://8pblmexqx5vk" path="res://Asset/boxes.png" id="1_sxyjl"]
 [ext_resource type="Texture2D" uid="uid://48hnhf62todh" path="res://Asset/meme.png" id="2_h2qjg"]
+[ext_resource type="Script" uid="uid://btrn3im2bjssv" path="res://GDBase/Move/Input/move_input_curve_component.gd" id="3_h2qjg"]
 
-[node name="Entity" type="Node2D"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sxyjl"]
+size = Vector2(12, 12)
+
+[sub_resource type="Curve" id="Curve_h2qjg"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.4698795, 0.90140843), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_boq8c"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_adxne"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.1746988, 1), 5.9749618, 0.0, 0, 0]
+point_count = 2
+
+[node name="Entity" type="CharacterBody2D"]
 
 [node name="Sprite" type="Node2D" parent="."]
 
@@ -16,3 +32,18 @@ region_rect = Rect2(0, 16, 16, 16)
 texture = ExtResource("2_h2qjg")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sxyjl")
+
+[node name="MoveInCurveByInputComponent" type="Node" parent="." node_paths=PackedStringArray("mover")]
+script = ExtResource("3_h2qjg")
+mover = NodePath("..")
+turn_in_point = true
+gravity = 128.0
+time_faster = 0.2
+time_slower = 0.2
+faster_curve = SubResource("Curve_h2qjg")
+slower_curve = SubResource("Curve_boq8c")
+turn_curve = SubResource("Curve_adxne")
+metadata/_custom_type_script = "uid://btrn3im2bjssv"
