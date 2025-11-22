@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=4 uid="uid://bqxmlluvr7tvy"]
+[gd_scene load_steps=5 format=4 uid="uid://dmokycb2d6014"]
 
 [ext_resource type="TileSet" uid="uid://cmh537og13tx6" path="res://Scene/地块.tres" id="1_ghgo0"]
 [ext_resource type="PackedScene" uid="uid://cimy84bw6gu37" path="res://Entity/人物.tscn" id="2_ximn3"]
