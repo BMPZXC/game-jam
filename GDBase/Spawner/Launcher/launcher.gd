@@ -1,11 +1,14 @@
 extends Node2D
 class_name Launcher
 
-@onready var spawner: Spawner = $Spawner
+@onready var spawner: Spawner = Spawner.new()
 
 @export var shooter:Node
 @export var gun:Node2D ##最好gun与launcher属于同级节点
 @export var control:ControlType
+@export_group("按键相关")
+@export var fire_action:String
+@export var reload_action:String
 @export_group("射击参数")
 @export var fire_interval:float = 0.1
 @export var fire_bullet_num:int = 1
@@ -17,6 +20,7 @@ class_name Launcher
 		remaining_bullets = clampi(value,-1,magaazine_capacity)
 @export var reload_time:float
 @export_group("子弹参数")
+@export var bullet:PackedScene
 @export var bullet_velocity:float
 @export var bullet_exit_time:float = -1
 var is_fire_interval:bool
@@ -28,6 +32,9 @@ enum ControlType{
 	OTHERS,
 }
 
+func _ready() -> void:
+	spawner.init(bullet)
+
 
 @warning_ignore("unused_parameter")
 func _process(delta: float) -> void:
@@ -35,13 +42,14 @@ func _process(delta: float) -> void:
 		return
 	if is_fire_interval:
 		return
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	if Input.is_action_pressed(fire_action):
 		var dir = get_local_mouse_position() - gun.position
 		fires(dir.normalized())
 		is_fire_interval = true
 		_start_interval_timer()
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		reload()
+	if reload_action:
+		if Input.is_action_pressed(reload_action):
+			reload()
 
 func _start_interval_timer():
 	if !fire_interval_timer:
