@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://l6yw5wxqbbm3"]
+[gd_scene load_steps=15 format=3 uid="uid://l6yw5wxqbbm3"]
 
 [ext_resource type="Texture2D" uid="uid://8pblmexqx5vk" path="res://Asset/boxes.png" id="1_sxyjl"]
 [ext_resource type="Texture2D" uid="uid://48hnhf62todh" path="res://Asset/meme.png" id="2_h2qjg"]
@@ -7,7 +7,10 @@
 [ext_resource type="Script" uid="uid://cmo1t30f66qgo" path="res://GDBase/Move/Orbit/orbit_component.gd" id="5_adxne"]
 [ext_resource type="Script" uid="uid://v4uwxotregtq" path="res://GDBase/Health/health_component.gd" id="6_ilp0k"]
 [ext_resource type="PackedScene" uid="uid://dssccalehutiv" path="res://GDBase/CellProgressBar/cells_progress_bar.tscn" id="7_psbbe"]
-[ext_resource type="PackedScene" uid="uid://bxnoo43u8rl6x" path="res://GDBase/Spawner/Launcher/Bullet/bullet.tscn" id="8_75iov"]
+[ext_resource type="PackedScene" uid="uid://bxnoo43u8rl6x" path="res://GDBase/Spawner/Launcher/Bullet/sword_qi.tscn" id="8_75iov"]
+[ext_resource type="PackedScene" uid="uid://b84eyanlvuixs" path="res://GDBase/Spawner/Launcher/Bullet/bullet.tscn" id="9_sb4mi"]
+[ext_resource type="Script" uid="uid://cst52mewg8j3" path="res://GDBase/Spawner/Launcher/launcher.gd" id="10_pgb4x"]
+[ext_resource type="PackedScene" uid="uid://dob7qv6qmj4li" path="res://GDBase/Spawner/Launcher/Bullet/fireball.tscn" id="11_vjdlm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxyjl"]
 size = Vector2(12, 12)
@@ -84,15 +87,25 @@ current_cells_num = 6
 shooter = NodePath("..")
 gun = NodePath("../OrbitComponent")
 fire_action = "attack"
-fire_interval = 1.0
+fire_interval = 0.5
 bullet = ExtResource("8_75iov")
 bullet_velocity = 0.1
-bullet_exit_time = 0.5
+bullet_exit_time = 0.05
 
 [node name="Fire" parent="." node_paths=PackedStringArray("shooter", "gun") instance=ExtResource("4_adxne")]
 shooter = NodePath("..")
 gun = NodePath("../OrbitComponent")
 fire_action = "fire"
 fire_interval = 1.0
-bullet = ExtResource("8_75iov")
+bullet = ExtResource("9_sb4mi")
 bullet_velocity = 12.0
+
+[node name="FireBall" type="Node2D" parent="." node_paths=PackedStringArray("shooter", "gun")]
+script = ExtResource("10_pgb4x")
+shooter = NodePath("..")
+gun = NodePath("../OrbitComponent")
+fire_action = "skill_r"
+fire_interval = 5.0
+bullet = ExtResource("11_vjdlm")
+bullet_velocity = 8.0
+metadata/_custom_type_script = "uid://cst52mewg8j3"
