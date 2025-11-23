@@ -68,6 +68,8 @@ metadata/_custom_type_script = "uid://cmo1t30f66qgo"
 
 [node name="HealthComponent" type="Area2D" parent="."]
 script = ExtResource("6_ilp0k")
+max_health = 6
+current_health = 6
 metadata/_custom_type_script = "uid://v4uwxotregtq"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HealthComponent"]
@@ -76,5 +78,5 @@ shape = SubResource("RectangleShape2D_sxyjl")
 [node name="CellsProgressBar" parent="HealthComponent" node_paths=PackedStringArray("health_component") instance=ExtResource("7_psbbe")]
 position = Vector2(-12, 5)
 health_component = NodePath("..")
-max_cells_num = 3
-current_cells_num = 3
+max_cells_num = 6
+current_cells_num = 6
