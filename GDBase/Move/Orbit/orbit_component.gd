@@ -54,7 +54,7 @@ func orbit(delta):
 		_sprite_flip()
 	
 	var offset := Vector2(cos(angle_in_radians), sin(angle_in_radians)) * radius
-	position = rotation_center.position + offset
+	global_position = rotation_center.global_position + offset
 	
 func _sprite_flip():
 	if position.x > 0:

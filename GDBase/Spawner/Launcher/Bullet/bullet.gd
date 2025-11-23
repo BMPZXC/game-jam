@@ -28,6 +28,7 @@ func _create_timer():
 	life_timer = Timer.new()
 	life_timer.one_shot = true
 	life_timer.timeout.connect(_recycle_self)
+	add_child(life_timer)
 
 func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
 	_recycle_self()

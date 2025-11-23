@@ -4,7 +4,7 @@ class_name Launcher
 @onready var spawner: Spawner = $Spawner
 
 @export var shooter:Node
-@export var gun:Node2D
+@export var gun:Node2D ##最好gun与launcher属于同级节点
 @export var control:ControlType
 @export_group("射击参数")
 @export var fire_interval:float = 0.1
@@ -51,7 +51,7 @@ func _start_interval_timer():
 		add_child(fire_interval_timer)
 	fire_interval_timer.start(fire_interval)
 
-func fires(fire_dir:Vector2,bullet_mods:Array = []):
+func fires(fire_dir:Vector2,bullet_mods:Array[Node] = []):
 	for i in fire_bullet_num:
 		fire(fire_dir,bullet_mods)
 		await get_tree().create_timer(0.02).timeout

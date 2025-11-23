@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bxnoo43u8rl6x"]
 
-[ext_resource type="Texture2D" uid="uid://dto3u6pajqu3l" path="res://Asset/guns.png" id="1_6sl0x"]
 [ext_resource type="Script" uid="uid://bhbww6x1jcdnt" path="res://GDBase/Spawner/Launcher/Bullet/bullet.gd" id="2_gontw"]
+[ext_resource type="Texture2D" uid="uid://cltds0syk5815" path="res://Asset/menu_item.png" id="2_pxh4o"]
 [ext_resource type="Script" uid="uid://crsfwmq4lqlfe" path="res://GDBase/Health/damage_component.gd" id="3_p14i4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3h86j"]
@@ -14,9 +14,9 @@ script = ExtResource("2_gontw")
 shape = SubResource("RectangleShape2D_3h86j")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_6sl0x")
+texture = ExtResource("2_pxh4o")
 region_enabled = true
-region_rect = Rect2(64, 0, 16, 16)
+region_rect = Rect2(128, 0, 16, 16)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 rect = Rect2(-4, -1, 8, 2)
