@@ -1,14 +1,10 @@
 extends Node2D
 
-@export var throned_body_velocity_y:float = -128
+@export var throned_body_position_y:float = 16
 @export var throned_body_position_x:float = 16
 @export var is_fall:bool##刺是否会下落
 
 func _on_damage_component_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D:
-		body.velocity.y = throned_body_velocity_y
-		var body_x_dir = signf(body.velocity.x)
-		body.position.x -= body_x_dir * throned_body_position_x
 	if body is TileMapLayer:
 		queue_free()
 
