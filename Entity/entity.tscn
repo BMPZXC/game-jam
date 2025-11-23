@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://l6yw5wxqbbm3"]
+[gd_scene load_steps=20 format=3 uid="uid://l6yw5wxqbbm3"]
 
 [ext_resource type="Script" uid="uid://c2t057q0qw21e" path="res://Entity/entity.gd" id="1_orqw4"]
 [ext_resource type="Texture2D" uid="uid://8pblmexqx5vk" path="res://Asset/boxes.png" id="1_sxyjl"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://dob7qv6qmj4li" path="res://GDBase/Spawner/Launcher/Bullet/fireball.tscn" id="11_vjdlm"]
 [ext_resource type="Script" uid="uid://sykpawsavia7" path="res://Entity/skill_box.gd" id="12_gdubu"]
 [ext_resource type="FontFile" uid="uid://dx2k78fa72r2n" path="res://VonwaonBitmap-16px.ttf" id="13_opyyd"]
+[ext_resource type="PackedScene" uid="uid://b0e1lkj7glll0" path="res://GDBase/Spawner/Launcher/Bullet/circular_chop.tscn" id="13_orqw4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxyjl"]
 size = Vector2(12, 12)
@@ -116,6 +117,15 @@ fire_action = "skill_r"
 fire_interval = 5.0
 bullet = ExtResource("11_vjdlm")
 bullet_velocity = 8.0
+metadata/_custom_type_script = "uid://cst52mewg8j3"
+
+[node name="circular_chop" type="Node2D" parent="." node_paths=PackedStringArray("shooter", "gun")]
+script = ExtResource("10_pgb4x")
+shooter = NodePath("..")
+gun = NodePath("../Sprite")
+fire_action = "skill_f"
+bullet = ExtResource("13_orqw4")
+bullet_exit_time = 0.1
 metadata/_custom_type_script = "uid://cst52mewg8j3"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

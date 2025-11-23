@@ -7,6 +7,7 @@
 
 [sub_resource type="GDScript" id="GDScript_pcsgp"]
 script/source = "extends  CharacterBody2D
+###测试合并
 @export var 敌人:CharacterBody2D
 ####测试
 var 禁用_下落:bool=false

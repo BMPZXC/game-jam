@@ -1,6 +1,7 @@
 extends Area2D
 class_name DamageComponent
 
+@export var whitelist:Array[Node]
 @export_group("伤害参数")
 ##伤害量
 @export var damage_amount:int = 1
@@ -14,8 +15,16 @@ class_name DamageComponent
 func _ready() -> void:
 	area_entered.connect(_on_area_entered)
 
+func set_node_enter_whitelist(node:Node):
+	whitelist.append(node)
+
+func reset():
+	whitelist.clear()
+
 func _on_area_entered(area: Area2D) -> void:
 	if !(area is HealthComponent):
+		return
+	if whitelist.has(area.get_parent()):
 		return
 	for i in damage_num:
 		area.damage(damage_amount)

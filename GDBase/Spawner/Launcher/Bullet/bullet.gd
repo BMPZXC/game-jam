@@ -7,6 +7,7 @@ var shooter:Node
 var velocity:Vector2
 var life_timer:Timer
 var mods:Array[Node]
+@export var is_hit_shooter:bool = true
 
 @warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
@@ -16,7 +17,7 @@ func init(shooter_:Node,velocity_:Vector2,time:float = -1):
 	velocity = velocity_
 	shooter = shooter_
 	rotation = velocity.angle()
-	
+	$DamageComponent.set_node_enter_whitelist(shooter)
 	if time == -1:
 		return
 	_create_timer()
@@ -37,6 +38,7 @@ func _recycle_self():
 	to_recycle_self.emit()
 	rotation = 0
 	position = Vector2.ZERO
+	$DamageComponent.reset()
 
 func _get_bullet_collisionshape2d()->CollisionShape2D:
 	return $CollisionShape2D.duplicate()
