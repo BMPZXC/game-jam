@@ -49,11 +49,13 @@ func 下砸():
 	下砸_1()
 func 下砸_1():
 	模式=下砸_锁定
+	
 	await get_tree().create_timer(0.4).timeout
 	
 	模式=下砸_攻击
 func 下砸_锁定(_delta: float):
-	global_position.x=敌人.global_position.x
+	if 两点_判断_是否联通(Vector2(global_position.x,global_position.y),Vector2(敌人.global_position.x,global_position.y),1): 
+		global_position.x=敌人.global_position.x
 func 下砸_攻击(_delta: float):
 	if not is_on_floor():
 		velocity.y=1500
@@ -61,7 +63,12 @@ func 下砸_攻击(_delta: float):
 		禁用_下落=false
 		下砸_冷却=6
 		模式=靠近
-
+		
+func 两点_判断_是否联通(from: Vector2, to: Vector2, 物理层: int = 1) -> bool:  #有性能损耗
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(from, to, 物理层)
+	var result = space_state.intersect_ray(query)
+	return result.is_empty()
 
 func _on_health_component_died() -> void:
 	queue_free()
