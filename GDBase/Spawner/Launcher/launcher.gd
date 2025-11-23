@@ -1,7 +1,7 @@
 extends Node2D
 class_name Launcher
 
-signal created_interval_timer(timer:Timer)##供技能冷却显示使用
+signal created_interval_timer(timer:Timer)##供技能冷却显示使用a
 
 @onready var spawner: Spawner = Spawner.new()
 
